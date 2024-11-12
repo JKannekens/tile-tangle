@@ -1,9 +1,25 @@
 import { createSignal } from 'solid-js'
 
+type Tile = {
+    type: string
+    background: string
+    icon?: HTMLOrSVGElement
+}
+
+const tiles: Tile[] = [
+    { type: 'green', background: 'bg-green-300' },
+    { type: 'blue', background: 'bg-blue-300' },
+    { type: 'yellow', background: 'bg-yellow-300' },
+    { type: 'purple', background: 'bg-purple-300' },
+    { type: 'red', background: 'bg-red-300' },
+]
+
+const getRandomTile = () => tiles[Math.floor(Math.random() * tiles.length)]
+
 export default function Home() {
     const [board, setBoard] = createSignal(
         Array.from({ length: 7 }, () =>
-            Array.from({ length: 7 }, () => Math.floor(Math.random() * 5))
+            Array.from({ length: 7 }, () => getRandomTile())
         )
     )
 
@@ -13,8 +29,10 @@ export default function Home() {
                 <div class="m-1 grid grid-cols-7 gap-1 sm:gap-3">
                     {board().map((row, i) =>
                         row.map((cell, j) => (
-                            <div class="flex h-12 w-12 items-center justify-center rounded-md bg-blue-300 shadow-md sm:h-20 sm:w-20 md:h-24 md:w-24">
-                                {cell}
+                            <div
+                                class={`flex h-12 w-12 items-center justify-center rounded-md shadow-md sm:h-20 sm:w-20 md:h-24 md:w-24 ${cell.background}`}
+                            >
+                                {cell.type}
                             </div>
                         ))
                     )}
